@@ -1,0 +1,64 @@
+https://dwango.github.io/scala_text/introduction-to-scala.html
+
+# インストール
+- Javaとscalaを入れる。Scalaのurlは以下
+  一番下のscala-2.12.3.msiを落とすこと。sbtとかはとりあえず無視
+  http://www.scala-lang.org/
+  環境変数を設定する
+  JAVA_HOME
+    JAVA_HOME=C:\Program Files\Java\jdk1.7.0_21
+  SCALA_HOME
+    SCALA_HOME=C:\Program Files\scala
+
+- HelloWorld
+  以下の記事に従って.scalaを作る
+  https://qiita.com/f81@github/items/8d67fb3f211fb3e149db
+
+object HelloWorld {
+  def main(args: Array[String]){
+    if(args.size == 0) {
+      val strs = Array("Hello", "World")
+          output(strs)
+    } else {
+          printf("Invalid args.")
+    }
+  }
+
+  def output(strs: Array[String]):Unit = {
+    for(str <- strs) {
+      printf("%s ", str)
+    }
+  }
+}
+
+-- 解説
+・object HelloWorld でシングルトンオブジェクトを作る。
+  (mainメソッドに複数のインスタンスは必要ないのでシングルトン)
+  実行の起点となるお約束の構文
+  object オブジェクト{
+    def main(args: Array[String]): Unit = {
+      処理
+    }
+  }
+  // : Unit = は省略可。Unitは戻り値がない場合の宣言(voidと同じ
+  
+・if,elseはおなじみ
+  上のサンプルではコマンドライン引数に値があればinvalidを出力する
+・def メソッドの宣言 まあrubyでもおなじみ
+  ただ、戻り値の型の宣言が独特
+  def メソッド名(引数リスト): メソッドの戻り値の型 = {}
+・for for(str <- strs) {・・・}で 拡張forループ
+・print関数
+  printf("%s ", str) で%sをstrで置換
+・val 変数名 = 値 でイミュータブルになる。javaのstatic finalと同じ
+
+
+
+# Scalaとは
+  JVM上で動作するJavaとは別の関数型言語。よってScala独自のお作法を知る必要がある。
+  ただ、JVM上で動かしてるのでJavaで作られたライブラリを動かす事ができる。
+  全体的に 変数名: 型 = {オブジェクト} って構文で書く傾向にある
+  
+# sbtとは
+  Scalaのビルとツール
+
