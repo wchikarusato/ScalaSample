@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>closure</title>
+</head>
+<body>
+<p>Hello World</p>
+<script type="text/javascript">
+<!-- リスト -->
+var candidates = new Array(1,2,3,4,5);
+
+<!-- フィルター関数 -->
+var filter = function (predicate) {
+    return function(candidates) {
+        var numbers = new Array();
+
+        for(var i = 0; i < candidates.length;i++) {
+            if(predicate(candidates[i])) {
+                numbers.push(candidates[i])
+            }
+        }
+
+        return numbers;
+    };
+};
+
+var predicate = function(x) {
+    return (x % 2) == 0;
+};
+
+<!-- 偶数フィルター関数 -->
+var oddFilter = filter(predicate)
+var results = oddFilter(candidates);
+
+<!-- 結果をコンソールに出力 -->
+for(var i = 0; i < results.length;i++) {
+    console.log(results[i]);
+}
+</script>
+</body>
+</html>

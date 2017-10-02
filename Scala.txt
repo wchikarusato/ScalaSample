@@ -1,4 +1,6 @@
-https://dwango.github.io/scala_text/introduction-to-scala.html
+やってみように従ってやればとりあえず基本的なことは網羅できそう
+https://qiita.com/f81@github/items/369d3ad97112b20d9bc5
+
 
 # インストール
 - Javaとscalaを入れる。Scalaのurlは以下
@@ -10,7 +12,7 @@ https://dwango.github.io/scala_text/introduction-to-scala.html
   SCALA_HOME
     SCALA_HOME=C:\Program Files\scala
 
-- HelloWorld
+# HelloWorld
   以下の記事に従って.scalaを作る
   https://qiita.com/f81@github/items/8d67fb3f211fb3e149db
 
@@ -31,8 +33,8 @@ object HelloWorld {
   }
 }
 
--- 解説
-・object HelloWorld でシングルトンオブジェクトを作る。
+### 解説
+- object HelloWorld でシングルトンオブジェクトを作る。
   (mainメソッドに複数のインスタンスは必要ないのでシングルトン)
   実行の起点となるお約束の構文
   object オブジェクト{
@@ -42,17 +44,141 @@ object HelloWorld {
   }
   // : Unit = は省略可。Unitは戻り値がない場合の宣言(voidと同じ
   
-・if,elseはおなじみ
+- if,elseはおなじみ
   上のサンプルではコマンドライン引数に値があればinvalidを出力する
-・def メソッドの宣言 まあrubyでもおなじみ
+- def メソッドの宣言 まあrubyでもおなじみ
   ただ、戻り値の型の宣言が独特
   def メソッド名(引数リスト): メソッドの戻り値の型 = {}
-・for for(str <- strs) {・・・}で 拡張forループ
-・print関数
+- for for(str <- strs) {・・・}で 拡張forループ
+  <-がポインタに見えるのは気のせいだろうか....
+- print関数
   printf("%s ", str) で%sをstrで置換
-・val 変数名 = 値 でイミュータブルになる。javaのstatic finalと同じ
+- val 変数名 = 値 でイミュータブルになる。javaのstatic finalと同じ
+  var で対義語のミュータブル。こっちは値を変えれる
+- foreach 引数に関数を渡す事ができる
+  strs.foreach(printf("%s", _))
+  _が strs配列の要素を渡すので上のサンプルのforがごっそり置き換えれる
 
 
+#  関数型宣言ってなに
+https://qiita.com/f81@github/items/9f0b9cc5c0f28deb48e2
+
+
+### 解説
+  var add = (x:Int) => {
+    total+=x
+    total
+  }
+  xを引数にしてtotalに足す。totalを戻り値として返す
+
+  var calculate = (x: Int) => x + 5 : Int
+  引数を渡すと5足して返す
+
+-  関数は自動的にイミュータブルになるから同じ宣言をする事ができない(やる場合はオーバーロードする?
+- 副作用がない。calculateファンクション内でスコープは完結してる。呼び出す度に前の値まで増える事はない
+- メソッドだけをオブジェクトとして返せる
+  上のサンプルを以下にも書ける
+  val add = (x: Int) => {
+    val _add = (y: Int) =>  y + 5
+    _add(x)
+  }
+  戻り値を _add 型にしてるのがメソッドをオブジェクトして返せるという意味
+
+
+#  クロージャー
+  Javascriptおなじみ。javaでは書けないけど、scalaだと書ける。Scala利点の一つ?
+
+### 解説
+  関数の中に関数があった時に身元不明の変数を宣言なしで使えること
+  function outer() {
+    var x = 10;
+    function inner() {
+        alert(x)
+        x = x + 1
+    }
+    return inner;
+  }
+  上の xを宣言なしで使ってるinner関数がクロージャー。
+  inner closes over x. -> closes over -> クロージャー わかりづれえ
+  以下の場合に使うらしい
+  
+- グローバル変数をなるべく減らしたい
+- 自由度の高い関数を生成したい
+- 呼び出して実行した結果を内部で保存して、次呼び出した時に前回の結果使いたいとき
+  (アクセスカウンターがこのパターン
+
+
+# Scalaのオブジェクト指向
+  よくあるUserクラスにid,nameのフィールドがあってget,setでとってくるやつ
+  class User(val id: Long, val firstname: String, val lastname: String) {
+    def getFullname() = this.firstname + " " +  this.lastname
+  }
+
+### 解説
+
+- 引数の val(またはvar)がそのままフィールドになる
+  なので記述がかなり省略できる
+- valなのでインスタンス.フィールドでアクセスできる
+  class User(private val id: Long,  ... で直アクセスできない様にする事も可
+
+
+# Scalaのインターフェース
+  https://qiita.com/lrf141/items/7a3a5ce4b2e1132f24d2
+
+### 解説
+- Scalaにはインターフェースがない。代わりにtraitを使う。
+  基本的にインターフェースと同じだが、traitの中に実装を入れることもできる。abstractに近い?
+  
+  trait Interface{
+    //javaでいう普通のinterfaceと同じでメソッド定義だけの場合
+    def method1(n:Int):Int
+
+    //戻り値の型がUnitに型推論される
+    def method2(n:Int)
+
+    //戻り値(ここではメソッドの実装)を持てる
+    def method3(n:Int) = n + 1
+  }
+  
+- traitを実装する場合はwithキーワードを使う
+  traitにtraitを継承させることも可
+  trait A{
+      def method1(n:Int) = n + 1
+  }
+  class D with A{
+    def method1(n:Int) = n + 1
+  }
+
+- オーバーライドする時は overrideキーワードをつける
+  trait A{
+     def method(n:Int):Int
+  }
+
+  class B extends A{
+      override def method(n:Int):Int = n+1
+  }
+
+- traitの初期化
+  デフォルト値があるので地味にここが厄介
+  以下でBを実行すると1でなく0が出力される
+  trait A{
+    val a:Int
+    println(a)
+  }
+
+  class B extends A{
+      val a = 1
+  }
+
+  以下で1と出力される
+  class B extends{
+     val a = 1
+  } with A
+
+
+
+
+------------- 未分類メモ ------------------------
 
 # Scalaとは
   JVM上で動作するJavaとは別の関数型言語。よってScala独自のお作法を知る必要がある。
@@ -61,4 +187,25 @@ object HelloWorld {
   
 # sbtとは
   Scalaのビルとツール
+
+# 関数とメソッドの違い
+  メソッドはあくまでオブジェクトと関連づいてる
+  関数はあくまで引数に依存する。
+  引数が同じなら関数は常に同じ値を返すが、メソッドはフィールド次第で同じ引数を渡しても違う結果が返る
+
+- 関数:funtion 引数を受け取って決められた通りの処理をして結果を返す
+  func hoge(a:int, b:int) -> int{
+    return a+b
+  }
+
+- メソッド:method オブジェクトが持っている自身に対する操作
+  class hogeMath {
+    static fun hoge(a:int, b:int) -> int{
+      return a+b
+    }
+  }
+
+
+https://dwango.github.io/scala_text/introduction-to-scala.html
+
 
