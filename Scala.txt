@@ -108,6 +108,19 @@ https://qiita.com/f81@github/items/9f0b9cc5c0f28deb48e2
   (アクセスカウンターがこのパターン
 
 
+# Scalaのオブジェクト指向
+class User(val id: Long, val firstname: String, val lastname: String) {
+  def getFullname() = this.firstname + " " +  this.lastname
+}
+
+### 解説
+よくあるUserクラスにid,nameのフィールドがあってget,setでとってくるやつ
+
+- 引数の val(またはvar)がそのままフィールドになる
+  なので記述がかなり省略できる
+- valなのでインスタンス.フィールドでアクセスできる
+  class User(private val id: Long,  ... で直アクセスできない様にする事も可
+
 
 
 ------------- 未分類メモ ------------------------
