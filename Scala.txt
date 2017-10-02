@@ -60,7 +60,7 @@ object HelloWorld {
   _が strs配列の要素を渡すので上のサンプルのforがごっそり置き換えれる
 
 
-## 関数型宣言ってなに
+#  関数型宣言ってなに
 https://qiita.com/f81@github/items/9f0b9cc5c0f28deb48e2
 
 
@@ -84,6 +84,33 @@ https://qiita.com/f81@github/items/9f0b9cc5c0f28deb48e2
   }
   戻り値を _add 型にしてるのがメソッドをオブジェクトして返せるという意味
 
+
+#  クロージャー
+  Javascriptおなじみ。javaでは書けないけど、scalaだと書ける。Scala利点の一つ?
+
+### 解説
+  関数の中に関数があった時に身元不明の変数を宣言なしで使えること
+  function outer() {
+    var x = 10;
+    function inner() {
+        alert(x)
+        x = x + 1
+    }
+    return inner;
+  }
+  上の xを宣言なしで使ってるinner関数がクロージャー。
+  inner closes over x. -> closes over -> クロージャー わかりづれえ
+  以下の場合に使うらしい
+  
+- グローバル変数をなるべく減らしたい
+- 自由度の高い関数を生成したい
+- 呼び出して実行した結果を内部で保存して、次呼び出した時に前回の結果使いたいとき
+  (アクセスカウンターがこのパターン
+
+
+
+
+------------- 未分類メモ ------------------------
 
 # Scalaとは
   JVM上で動作するJavaとは別の関数型言語。よってScala独自のお作法を知る必要がある。
