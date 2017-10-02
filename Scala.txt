@@ -109,17 +109,72 @@ https://qiita.com/f81@github/items/9f0b9cc5c0f28deb48e2
 
 
 # Scalaのオブジェクト指向
-class User(val id: Long, val firstname: String, val lastname: String) {
-  def getFullname() = this.firstname + " " +  this.lastname
-}
+  よくあるUserクラスにid,nameのフィールドがあってget,setでとってくるやつ
+  class User(val id: Long, val firstname: String, val lastname: String) {
+    def getFullname() = this.firstname + " " +  this.lastname
+  }
 
 ### 解説
-よくあるUserクラスにid,nameのフィールドがあってget,setでとってくるやつ
 
 - 引数の val(またはvar)がそのままフィールドになる
   なので記述がかなり省略できる
 - valなのでインスタンス.フィールドでアクセスできる
   class User(private val id: Long,  ... で直アクセスできない様にする事も可
+
+
+# Scalaのインターフェース
+  https://qiita.com/lrf141/items/7a3a5ce4b2e1132f24d2
+
+### 解説
+- Scalaにはインターフェースがない。代わりにtraitを使う。
+  基本的にインターフェースと同じだが、traitの中に実装を入れることもできる。abstractに近い?
+  
+  trait Interface{
+    //javaでいう普通のinterfaceと同じでメソッド定義だけの場合
+    def method1(n:Int):Int
+
+    //戻り値の型がUnitに型推論される
+    def method2(n:Int)
+
+    //戻り値(ここではメソッドの実装)を持てる
+    def method3(n:Int) = n + 1
+  }
+  
+- traitを実装する場合はwithキーワードを使う
+  traitにtraitを継承させることも可
+  trait A{
+      def method1(n:Int) = n + 1
+  }
+  class D with A{
+    def method1(n:Int) = n + 1
+  }
+
+- オーバーライドする時は overrideキーワードをつける
+  trait A{
+     def method(n:Int):Int
+  }
+
+  class B extends A{
+      override def method(n:Int):Int = n+1
+  }
+
+- traitの初期化
+  デフォルト値があるので地味にここが厄介
+  以下でBを実行すると1でなく0が出力される
+  trait A{
+    val a:Int
+    println(a)
+  }
+
+  class B extends A{
+      val a = 1
+  }
+
+  以下で1と出力される
+  class B extends{
+     val a = 1
+  } with A
+
 
 
 
