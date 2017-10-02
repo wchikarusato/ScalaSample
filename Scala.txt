@@ -176,6 +176,8 @@ https://qiita.com/f81@github/items/9f0b9cc5c0f28deb48e2
   } with A
 
 
+# ここから先
+http://www.atmarkit.co.jp/fjava/index/index_scala.html
 
 
 ------------- 未分類メモ ------------------------
